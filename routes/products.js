@@ -7,10 +7,12 @@ const {Router} = express;
 
 const router =  new Router();
 
+
+
 //----------------------------------------
 
-const productos = newContainer.getAll();
 router.get('/', (req,res)=>{
+    const productos = newContainer.getAll();
     productos.then((items)=>{
         let htmlText = ['<h1>Listado de productos</h1>'];
 
@@ -31,7 +33,7 @@ router.get('/:id',(req,res)=>{
     const producto = newContainer.getById(parseInt(req.params.id))
     producto.then((item)=>{
         res.send(`
-        <h1> Este es el producto random </h1>
+        <h1> Este es el producto ${item.title} </h1>
 
         <h2>${item.title}</h2>
         <p>Tiene un costo de ${item.price} $</p>
@@ -39,7 +41,9 @@ router.get('/:id',(req,res)=>{
         <p>El Id de tu producto es ${item.id}</p>
         
         `)
-    }).catch((err)=>err)
+    }).catch((error)=>{
+        res.json({error : 'producto no encontrado'})
+    })
 
 })
 
@@ -56,11 +60,8 @@ router.post('/save', (req,res)=>{
         price,
         thumbnail                                                                                                                                           
       }
-    async function getId(){
-        const newId = await newContainer.save(producto1);
-        return newId
-    }    
-    getId().then((data)=>{
+      
+    newContainer.save(producto1).then((data)=>{
         let htmlText = ['<h1>Listado de productos</h1>'];
 
         
@@ -69,6 +70,7 @@ router.post('/save', (req,res)=>{
         <img src=${data.thumbnail} />
         <p>El Id de tu producto es ${data.id}</p>
         `]
+       
         res.send(`${htmlText.join('')}`);
      
         })
@@ -84,11 +86,10 @@ router.put('/:id', (req,res)=>{
         id: req.params.id                                                                                                                                   
       }
 
-    const productoActualizado = newContainer.updateById(producto)
-    console.log(productoActualizado)
+    const productoActualizado = newContainer.updateById(producto);
     productoActualizado.then(data=>{
         res.send(`
-        <h1> Este es el producto random </h1>
+        <h1> Este es el producto ${data.title} </h1>
     
         <h2>${data.title}</h2>
         <p>Tiene un costo de ${data.price} $</p>

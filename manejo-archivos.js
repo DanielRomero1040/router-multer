@@ -139,6 +139,13 @@ const producto3 = {
 
 const newContenedor = new Contenedor
 
+// console.log(
+//     newContenedor.save(producto3).then(
+//         (data)=>{
+//             console.log(data.title, data.price)
+//         }
+//     )
+//     )
 
 // console.log(newContenedor.getById(3).then((item)=>{
 //     console.log(item)
