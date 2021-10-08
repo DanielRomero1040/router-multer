@@ -1,12 +1,12 @@
 const express = require("express");
 const contenedor = require ('../manejo-archivos');
 
+
 const newContainer = new contenedor.Contenedor;
 
 const {Router} = express;
 
 const router =  new Router();
-
 
 
 //----------------------------------------
@@ -16,16 +16,16 @@ router.get('/', (req,res)=>{
     productos.then((items)=>{
         let htmlText = ['<h1>Listado de productos</h1>'];
 
-        items.map(element => {
-            htmlText = [...htmlText,`<h2>${element.title}</h2>
-            <p>Tiene un costo de ${element.price} $</p>
-            <img src=${element.thumbnail} />
-            <p>El Id de tu producto es ${element.id}</p>
-            `]
-        })
-
-        res.send(`${htmlText.join('')}`);
+    items.map(element => {
+        htmlText = [...htmlText,`<h2>${element.title}</h2>
+        <p>Tiene un costo de ${element.price} $</p>
+        <img src=${element.thumbnail} />
+        <p>El Id de tu producto es ${element.id}</p>
+        `]
     })
+   
+   res.render("products", {arr:items});
+})
 })
 
 router.get('/:id',(req,res)=>{
@@ -71,7 +71,7 @@ router.post('/save', (req,res)=>{
         <p>El Id de tu producto es ${data.id}</p>
         `]
        
-        res.send(`${htmlText.join('')}`);
+        res.sendFile("index");
      
         })
 })
